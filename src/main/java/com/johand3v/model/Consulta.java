@@ -2,6 +2,7 @@ package com.johand3v.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,20 +36,38 @@ public class Consulta {
 	@JoinColumn(name = "id_especialidad", nullable = false, foreignKey = @ForeignKey(name="FK_consulta_especialidad"))
 	private Especialidad especialidad;
 	
+	@Column(name = "num_consultorio", length = 3)
+	private String numConsultorio ;
+	
 	//sping boot 1.5 -> pom.xml jsr310
 	@Column(name = "fecha")
 	private LocalDate fecha;
-	
-	@Column(name = "num_consultorio", length = 3)
-	private String numConsultorio ;
 	
 	
 	//Me quede en el video 1:32
 	@OneToMany(mappedBy = "consulta", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<DetalleConsulta> detalleConsulta;
+
 	
 	
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(idConsulta);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Consulta other = (Consulta) obj;
+		return Objects.equals(idConsulta, other.idConsulta);
+	}
+
 	public List<DetalleConsulta> getDetalleConsulta() {
 		return detalleConsulta;
 	}

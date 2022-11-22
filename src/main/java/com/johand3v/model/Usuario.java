@@ -1,8 +1,14 @@
 package com.johand3v.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +26,21 @@ public class Usuario {
 	
 	@Column(name = "estado", nullable = false)
 	private boolean enabled;
+	
+	
+	//SELECT * FROM WHERE USERNAME = ?
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name="id_usuario", referencedColumnName = "idUsuario"),
+	inverseJoinColumns = @JoinColumn(name="id_rol", referencedColumnName = "idRol"))
+	private List<Rol> roles;
+	
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
 
 	public Integer getIdUsuario() {
 		return idUsuario;
