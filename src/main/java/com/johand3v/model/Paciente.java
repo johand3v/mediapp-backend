@@ -17,16 +17,16 @@ public class Paciente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPaciente;
 
-	@Size(min = 3, max = 70, message = "Minimo 3 y Maximo 70 digitos")
+	@Size(min = 3, max = 70, message = "{nombres.size}")
 	@Column(name = "nombres", nullable = false, length = 70)
 	private String nombres;
 
-	@Size(min = 3, max = 70, message = "Minimo 3 y Maximo 70 digitos")
+	@Size(min = 3, max = 70, message = "{apellidos.size}")
 	@Column(name = "apellidos", nullable = false, length = 70)
 	private String apellidos;
 
 	@Size(min = 8, max = 8, message = "Es necesario 8 digitos")
-	@Column(name = "dni", nullable = false, length = 8)
+	@Column(name = "dni", nullable = false, length = 8, unique = true)
 	private String dni;
 
 	@Size(max = 150, message = "Maximo 150 digitos")
@@ -38,7 +38,7 @@ public class Paciente {
 	private String telefono;
 
 	@Size(max = 50, message = "Maximo 50 digitos")
-	@Email
+	@Email(message = "Email formato incorrecto")
 	@Column(name = "email", nullable = true, length = 55)
 	private String email;
 

@@ -1,6 +1,5 @@
 package com.johand3v.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,49 +15,40 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.johand3v.exception.ModelNotFoundException;
-import com.johand3v.model.Paciente;
-import com.johand3v.service.IPacienteService;
+import com.johand3v.model.Medico;
+import com.johand3v.service.IMedicoService;
 
 @RestController
-@RequestMapping("/pacientes")
-public class PacienteController {
+@RequestMapping("/medicos")
+public class MedicoController {
 	
 	@Autowired
-	private IPacienteService service;
+	private IMedicoService service;
 
 	@PostMapping
-	public ResponseEntity<Paciente> registrar(@RequestBody @Valid Paciente t) throws Exception {
-
-		Paciente obj = service.registrar(t);
-		//localhost:8080/pacientes/1
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getIdPaciente()).toUri();
-		
-		//return new ResponseEntity<>(service.registrar(t), HttpStatus.CREATED);
-		return ResponseEntity.created(location).build();
-
+	public ResponseEntity<Medico> registrar(@RequestBody @Valid Medico t) throws Exception {
+		return new ResponseEntity<>(service.registrar(t), HttpStatus.CREATED);
 	}
 
 	@PutMapping
-	public ResponseEntity<Paciente> modificar(@RequestBody @Valid Paciente t) throws Exception {
+	public ResponseEntity<Medico> modificar(@RequestBody @Valid Medico t) throws Exception {
 		return new ResponseEntity<>(service.modificar(t), HttpStatus.OK);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Paciente>> listar() throws Exception {
+	public ResponseEntity<List<Medico>> listar() throws Exception {
 		return new ResponseEntity<> (service.listar(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Paciente> listarPorId(@PathVariable Integer id) throws Exception {
+	public ResponseEntity<Medico> listarPorId(@PathVariable Integer id) throws Exception {
 		
-		Paciente obj = service.listarPorId(id);
+		Medico obj = service.listarPorId(id);
 		
 		if (obj == null) {
-			throw new ModelNotFoundException("Paciente no encontrado con el ID " + id);
+			throw new ModelNotFoundException("Medico no encontrado con el ID " + id);
 		}
 		
 		return new ResponseEntity<>(service.listarPorId(id), HttpStatus.OK);
@@ -67,10 +57,10 @@ public class PacienteController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminarPorId(@PathVariable Integer id) throws Exception {
 		
-		Paciente obj = service.listarPorId(id);
+		Medico obj = service.listarPorId(id);
 		
 		if (obj == null) {
-			throw new ModelNotFoundException("Paciente no encontrado con el ID " + id);
+			throw new ModelNotFoundException("Medico no encontrado con el ID " + id);
 		}
 		service.eliminarPorId(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
