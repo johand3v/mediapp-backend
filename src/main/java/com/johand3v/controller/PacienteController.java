@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +23,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.johand3v.exception.ModelNotFoundException;
 import com.johand3v.model.Paciente;
 import com.johand3v.service.IPacienteService;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/pacientes")
@@ -74,6 +79,24 @@ public class PacienteController {
 		}
 		service.eliminarPorId(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/hateoas/{id}")
+	public EntityModel<Paciente> listarHateosPorId(@PathVariable Integer id) throws Exception {
+		
+		Paciente obj = service.listarPorId(id);
+		
+		if (obj == null) {
+			throw new ModelNotFoundException("Paciente no encontrado con el ID " + id);
+		}
+		
+		//localhost:8080/paciente/1
+		EntityModel<Paciente> recurso = EntityModel.of(obj);
+		WebMvcLinkBuilder link1 = linkTo(methodOn(this.getClass()).listarHateosPorId(id));
+		WebMvcLinkBuilder link2 = linkTo(methodOn(this.getClass()).listarHateosPorId(2));
+		recurso.add(link1.withRel("paciente-recurso1"));
+		recurso.add(link2.withRel("paciente-recurso1"));
+		return recurso;
 	}
 
 	

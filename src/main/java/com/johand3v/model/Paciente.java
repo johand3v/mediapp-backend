@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "paciente")
 public class Paciente {
@@ -17,6 +19,7 @@ public class Paciente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPaciente;
 
+	//@JsonProperty("json_nombres")  cuando  quieras personalizar para trabajar con angular
 	@Size(min = 3, max = 70, message = "{nombres.size}")
 	@Column(name = "nombres", nullable = false, length = 70)
 	private String nombres;

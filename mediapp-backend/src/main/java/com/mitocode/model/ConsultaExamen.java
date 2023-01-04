@@ -1,4 +1,4 @@
-package com.johand3v.model;
+package com.mitocode.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,11 +8,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "consulta_examen")
 @IdClass(ConsultaExamenPK.class)
-public class CosultaExamen {
+public class ConsultaExamen {
 
 	@Id
 	private Consulta consulta;
-	
+
 	@Id
 	private Examen examen;
 
@@ -31,7 +31,5 @@ public class CosultaExamen {
 	public void setExamen(Examen examen) {
 		this.examen = examen;
 	}
-
-	
 
 }
